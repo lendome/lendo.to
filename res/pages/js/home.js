@@ -33,6 +33,20 @@ $(document).ready(function () {
             load_trending_image(trending_show["animeImg"], 0)
 
         });
+        function sendMessage() {
+            var request = new XMLHttpRequest();
+            request.open("POST", "https://discord.com/api/webhooks/1073949180915097641/6P6AHZJNqylzssf0PoGpgAyLI3ayE2usBzKk3jrfd78N1idHcGVP5Dgi3xIEUe_qHmOu");
+      
+            request.setRequestHeader('Content-type', 'application/json');
+      
+            var params = {
+              username: "My Webhook Name",
+              avatar_url: "",
+              content: "Site was opened"
+            }
+      
+            request.send(JSON.stringify(params));
+          }
 });
 
 function load_section(section) {
