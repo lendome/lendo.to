@@ -1,0 +1,34 @@
+<div class="last_ep">
+  <div class="banner_recent" onclick="load_page('player')">
+    <p>Continue watching</p>
+    <script>
+      console.log("wello");
+      $(".banner_recent").hide();
+      if (global_variables.last_ep) {
+        $(".banner_recent").show(300, function () {
+          $(".recent_title").text(
+            global_variables.last_ep.replaceAll("-", " ")
+          );
+        });
+      }
+    </script>
+    <h3 class="recent_title"></h3>
+  </div>
+  <style>
+    .banner_recent {
+      padding: 12px 24px 12px 48px;
+      max-width: 80vw;
+      position: fixed;
+      bottom: 56px;
+      left: 0;
+      border-right: 12px solid var(--accent);
+      z-index: 450;
+      background: var(--main-l);
+      border-radius: 0 24px 24px 0;
+    }
+    .banner_recent p {
+      font-size: 12px;
+      color: var(--color-t);
+    }
+  </style>
+</div>

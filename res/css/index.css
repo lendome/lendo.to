@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+    border: none;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: none;
+    color: var(--color);
+}
+
+html{
+    background: var(--main);
+}
+button{
+    position: relative;
+    padding: 6px 12px 6px 28px;
+    font-size: 18px;
+}
+button .button-icon{
+    position: absolute;
+    left: 6px;
+    font-size: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+button.active{
+    background: var(--accent) !important;
+}
+:root{
+    --main:#0b0c0e;
+    --main-t:#0b0c0e90;
+    --main-d:#0a0b0d;
+    --main-d2:#090a0b;
+    --main-l:#232426;
+    --main-l2:#3c3d3e;
+    --color:#eeeeee;
+    --color-d:#d6d6d6;
+    --color-l:#f0f0f0;
+    --accent:#4871f7;
+    --accent-d:#4166de;
+    --accent-d2:#3a5ac6;
+    --accent-l:#5a7ff8;
+    --green:#2ecc71;
+    --color-t:#eeeeee70;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: var(--main-t);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 12px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-l);
+  }

@@ -1,0 +1,293 @@
+<div class="search">
+  <div class="search-modal">
+    <div class="search-bar">
+      <input
+        type="text"
+        name=""
+        id="search"
+        onkeyup="change_search_string(this)"
+        placeholder="Anime name"
+      />
+      <div class="icon material-icons-round">search</div>
+    </div>
+    <div class="search-results">
+
+    </div>
+    <div class="check-options">
+      <h3>Genres</h3>
+      <div class="genres">
+        <div
+          class="cover"
+          onclick="$(this).hide();$('.genres').css('height','auto')"
+        ></div>
+        <div class="genre-container"></div>
+      </div>
+      <!-- <div class="release-date">
+        <p class="left">1940</p>
+        <p class="right">Now</p>
+        <input type="range"  name="" id="" />
+      </div> -->
+    </div>
+  </div>
+  <script defer>
+      let genres = [
+        "action",
+        "adventure",
+        "cars",
+        "comedy",
+        "crime",
+        "dementia",
+        "demons",
+        "drama",
+        "dub",
+        "ecchi",
+        "family",
+        "fantasy",
+        "game",
+        "gourmet",
+        "harem",
+        "historical",
+        "horror",
+        "josei",
+        "kids",
+        "magic",
+        "martial-arts",
+        "mecha",
+        "military",
+        "music",
+        "mystery",
+        "parody",
+        "police",
+        "psychological",
+        "romance",
+        "samurai",
+        "school",
+        "sci-fi",
+        "seinen",
+        "shoujo",
+        "shoujo-ai",
+        "shounen",
+        "shounen-ai",
+        "slice-of-Life",
+        "space",
+        "sports",
+        "super-power",
+        "supernatural",
+        "suspense",
+        "thriller",
+        "vampire",
+        "yaoi",
+        "yuri",
+      ];
+      let search_params = {
+        active_genres: [],
+      };
+      function change_search_string(input) {
+        console.log(encodeURIComponent(input.value))
+        fetch("https://gogoanime.consumet.stream/search?keyw="+encodeURIComponent(input.value))
+        .then((response) => response.json())
+        .then((animelist) => {
+          console.log(animelist)
+          $(".search-results").html("")
+          for (let i = 0; i < animelist.length; i++) {
+            const element = animelist[i];
+            $(".search-results").html($(".search-results").html()+
+          `
+          <div class="result" id="${element.animeId}" onclick="load_player(this.id)">
+        <img src="${element.animeImg}" alt="">
+        <div class="data">
+          <h3>${element.animeTitle}</h3>
+          <p>${element.status}</p>
+        </div>
+      </div>
+          `
+          )
+            
+          }
+          
+        });
+      }
+      function filter_genres(shows) {
+        for (let g = 0; g < shows.length; g++) {
+          console.log("iter")
+          fetch("https://api.consumet.org/anime/zoro/"+encodeURIComponent(shows[g].animeTitle))
+          .then((response) => response.json())
+          .then((animelist) => {
+            console.log(animelist)
+            for (let l = 0; l < search_params.active_genres.length; l++) {
+            if(animelist.results[0].genres.indexOf(search_params.active_genres[l]) == -1){
+              animelist.splice
+              break
+            }
+            }
+          });
+        }
+        
+      }
+      function toggle_genre(genre) {
+        if ($("#" + genre).hasClass("active")) {
+          $("#" + genre).removeClass("active");
+          console.log("0");
+          const index = search_params.active_genres.indexOf(genre);
+          if (index > -1) {
+
+            search_params.active_genres.splice(index, 1);
+          }
+          console.log(search_params)
+        } else {
+          $("#" + genre).addClass("active");
+          console.log("1");
+          search_params.active_genres.push(genre)
+          console.log(search_params)
+          fetch("https://gogoanime.consumet.stream/genre/"+genre)
+    .then((response) => response.json())
+    .then((animelist) => {
+      filter_genres(animelist)
+    });
+
+
+
+
+        }
+        console.log("d");
+
+      }
+      $(document).ready(function () {
+        for (let g = 0; g < genres.length; g++) {
+          $(".check-options .genres .genre-container").html(
+            $(".check-options .genres .genre-container").html() +
+              `<div class="genre" onclick="toggle_genre(this.id)" id="${
+                genres[g]
+              }">${genres[g].replaceAll("-", " ")}</div>`
+          );
+        }
+
+
+      });
+      
+      $( "#search" ).focus(function() {
+        
+      });
+  </script>
+  <style>
+    .genres .cover {
+      position: absolute;
+      left: 0;
+      background: linear-gradient(transparent 0%, var(--main-l2) 100%);
+      border-radius: 12px;
+
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
+    .genres .active {
+      background: var(--accent) !important;
+    }
+    .check-options h3 {
+      margin: 12px;
+    }
+    .check-options .genres .genre {
+      transition: background 0.2s;
+      width: fit-content;
+      margin: 3px;
+      background: var(--main-l);
+      height: 100%;
+      font-size: 12px;
+      padding: 3px 12px 3px 12px;
+      border-radius: 24px;
+    }
+    .genres {
+      position: relative;
+      margin: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 56px;
+    }
+    .check-options .genres .genre-container {
+      padding: 3px;
+      border-radius: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      background: var(--main-l2);
+      /*grid-template-columns: repeat(auto-fill, minmax(75px, max-content));*/
+    }
+    .check-options {
+      display: none;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 56px;
+      width: 80vw;
+      background: var(--main-l);
+      border-radius: 8px;
+    }
+    .search-results {
+      display: grid;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 56px;
+      width: 80vw;
+      background: var(--main-l);
+      border-radius: 8px;
+      max-height: 60vh;
+      overflow-y: scroll;
+    }
+    .search-results img{
+      max-width: 56px;
+    }
+    .search-results .result{
+      background: var(--main);
+      margin: 6px;
+      border-radius: 6px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: min-content auto;
+    }
+    .search-results .data{
+      margin: 6px;
+    }
+    .search-results .data h3{
+      font-size: 18px;
+    }
+    .search-results .data p{
+      font-size: 12px;
+      color: var(--color-t);
+    }
+    .search-modal {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .search-modal .search-bar {
+      height: 56px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 224px;
+    }
+    .search-modal .search-bar .icon {
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      font-size: 18px;
+      color: var(--color);
+      background: var(--accent);
+      padding: 6px;
+      border-radius: 8px;
+      transform: translateY(-50%);
+    }
+    .search-modal .search-bar input {
+      width: 224px;
+      height: 32px;
+      padding: 6px 12px 6px 12px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--main-l);
+      border-radius: 8px;
+    }
+  </style>
+</div>

@@ -1,0 +1,234 @@
+<div class="menu"></div>
+<div class="last_ep"></div>
+<div class="search"></div>
+<script defer src="res/pages/js/home.js"></script>
+
+<div class="grid">
+    <div class="head">
+
+    </div>
+    <div class="body">
+        <div class="trending-display">
+            
+            <div class="content">
+                <h3 class="title" id="trending-title"></h3>
+                <div class="icons">
+                    <button class="material-icons-round">bookmark_border</button>
+                    <button class="material-icons-round">more_vert</button>
+                </div>
+                <div class="main-interaction">
+                    <button class="info">?</button>
+                    <button class="watch" onclick="load_player(this.id)">Watch <div class="button-icon material-icons-round">play_circle_filled</div></button>
+                </div>
+            </div>
+            <div class="background">
+                <div class="bgc"></div>
+                <img class="bg_img" crossorigin="anonymous" src="https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=https://ih1.redbubble.net/image.1728159031.8873/fpp,medium,lustre,wall_texture,product,750x1000.jpg" alt="">
+            </div>
+            <div class="cover">
+                <div class="button-set">
+                    <div class="btn-c">
+                        <button class="active" id="recent-release" onclick="load_section(this.id)">Latest Episodes</button>
+                    </div>
+                    <div class="btn-c">
+                        <button id="top-airing" onclick="load_section(this.id)">Top airing</button>
+                    </div>
+                    <div class="btn-c">
+                        <button id="popular" onclick="load_section(this.id)">Popular</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="recent-episodes">
+            <div class="data">
+                <h3>Latest Episodes</h3>
+            </div>
+            <div class="episode-container">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+
+</script>
+
+<style>
+    .body{
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    .recent-episodes{
+        margin: 24px 0 0 0;
+        position: relative;
+        z-index: 350;
+
+    }
+    .recent-episodes .data{
+        margin: 12px;
+    }
+    .recent-episodes .episode-container{
+        display: grid;
+        max-width: 100vw;
+        min-width: 0;
+        grid-auto-rows: 168px;
+        grid-template-columns: auto auto auto;
+        overflow: hidden;
+    }
+    .recent-episodes .episode-container h3{
+        font-size: 12px;
+        max-height: 30%;
+        overflow: hidden;
+    }
+    .recent-episodes .episode-container p{
+        font-size: 10px;
+        color: var(--color-t);
+    }
+    .recent-episodes .episode-container .episode .background img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .recent-episodes .episode-container .episode .background{
+        width: 100%;
+        height: 100%;
+    }
+    .recent-episodes .episode-container .episode{
+        margin: 3px;
+    }
+    .recent-episodes .episode-container .episode .data{
+        margin: 0;
+        max-height: 40%;
+        
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        background: var(--main);
+        padding: 6px;
+        
+        border-radius: 4px;
+        width: calc(100%);
+        border: solid var(--main-l) 2px;
+    
+    }
+    .recent-episodes .episode-container .episode{
+        overflow: hidden;
+        border-radius: 6px;
+        position: relative;
+    }
+    .btn-c{
+        position: relative;
+    }
+    .trending-display .cover .button-set{
+        display: grid;
+        grid-auto-columns: auto;
+        grid-auto-flow: column;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        
+        transform: translateY(-50%);
+        width: 100%;
+    }
+    .trending-display .cover .button-set button{
+        background: none;
+        width: max-content;
+        padding: 6px 12px 6px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        position: absolute;
+        z-index: 450;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+
+    }
+    .trending-display .content .main-interaction{
+        position: absolute;
+        right: 12px;
+        bottom: 132px;
+        display: grid;
+        grid-auto-columns: max-content;
+        grid-auto-flow: column;
+    }
+    .trending-display .content .main-interaction .watch{
+       
+        background: var(--main-t);
+        border-radius: 18px;
+        padding: 6px 12px 6px 28px;
+        backdrop-filter: blur(30px);
+       
+    }
+    .trending-display .content .main-interaction .info{
+        font-size: 18px;
+        background: var(--accent);
+        border-radius: 18px;
+        padding: 6px 12px 6px 12px;
+        margin: 0 12px 0 0 ;
+       
+    }
+    
+    .trending-display .cover{
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 134;
+        height: 224px;
+        width: 100vw;
+        transform: translateY(50%);
+        background: linear-gradient(180deg,transparent 0%,var(--main-t) 70%);
+        backdrop-filter: blur(40px);
+        border-radius: 32px;
+    }
+    .grid{
+        display: grid;
+        grid-template-rows: 56px auto;
+        width: 100vw;
+        height: 100vh;
+    }
+    .trending-display .background img{
+        border-radius: 32px;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        
+    }
+    .trending-display .background{
+        height: 424px;
+    }
+    .trending-display{
+        border-radius: 24px;
+        
+        position: relative;
+    }
+    .trending-display .content{
+        padding: 24px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: none;
+background: linear-gradient(150deg, rgb(5, 5, 5) 0%, rgba(3,0,18,0) 70%);
+    }
+    .trending-display .content .icons{
+        position: absolute;
+        right: 12px;
+        top: 12px;
+    }
+    .trending-display .content .icons button{
+        background: none;
+        border-radius: 100%;
+        padding: 6px;
+        font-size: 18px;
+        border: solid var(--accent) 1.5px;
+    }
+    .trending-display .content h3{
+        font-size: 48px;
+        max-width: 60%;
+        word-break:break-all;
+    }
+
+</style>

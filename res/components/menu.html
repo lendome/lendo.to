@@ -1,0 +1,239 @@
+<div class="menu">
+  <button
+    class="material-icons-round menu-reveal"
+    onclick="$('.menu-window').show('slide', { direction: 'left' }, 200);"
+  >
+    menu
+  </button>
+  <div class="menu-window">
+    <div class="upper">
+      <button
+        class="menu-hide material-icons-round"
+        onclick="$('.menu-window').hide('slide', { direction: 'left' }, 200);"
+      >
+        chevron_left
+      </button>
+      <div class="content">
+        <div class="profile">
+          <div class="banner">
+            <div style="grid-area: image" class="image">
+              <div class="container">
+                <div class="material-icons-round">person</div>
+                <img src="" onerror="this.style.display='none'" />
+              </div>
+            </div>
+
+            <div class="title" style="grid-area: title">
+              <h3>Sir. Mr. George Reddish Manlet</h3>
+            </div>
+            <div class="sub-title" style="grid-area: sub-title">
+              <p>Teamon Slayers</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="background"></div>
+    </div>
+    <div class="menu-options" onclick="load_page('home')">
+      <div class="menu-option">
+        <div class="btfy-l"></div>
+        <div class="btfy-h"></div>
+        <div class="icon material-icons-round">home</div>
+        <h3>Home</h3>
+      </div>
+      <div class="menu-option" onclick="load_page('player')">
+        <div class="btfy-l"></div>
+        <div class="btfy-h"></div>
+        <div class="icon material-icons-round">play_circle_filled</div>
+        <h3>Contine watching</h3>
+      </div>
+    </div>
+  </div>
+  <script>
+    function menu() {}
+    $(".menu-window").hide();
+    document.addEventListener("touchstart", handleTouchStart, false);
+    document.addEventListener("touchmove", handleTouchMove, false);
+
+    var xDown = null;
+    var yDown = null;
+
+    function getTouches(evt) {
+      return (
+        evt.touches || // browser API
+        evt.originalEvent.touches
+      ); // jQuery
+    }
+
+    function handleTouchStart(evt) {
+      const firstTouch = getTouches(evt)[0];
+      xDown = firstTouch.clientX;
+      yDown = firstTouch.clientY;
+    }
+
+    function handleTouchMove(evt) {
+      if (!xDown || !yDown) {
+        return;
+      }
+
+      var xUp = evt.touches[0].clientX;
+      var yUp = evt.touches[0].clientY;
+
+      var xDiff = xDown - xUp;
+      var yDiff = yDown - yUp;
+
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        /*most significant*/
+        if (xDiff > 0) {
+          $(".menu-window").hide("slide", { direction: "left" }, 200);
+        } else {
+          $(".menu-window").show("slide", { direction: "left" }, 200);
+        }
+      } else {
+        if (yDiff > 0) {
+          /* down swipe */
+        } else {
+          /* up swipe */
+        }
+      }
+      /* reset values */
+      xDown = null;
+      yDown = null;
+    }
+  </script>
+  <style>
+    .menu-options {
+      display: grid;
+      grid-auto-rows: 72px;
+    }
+    .menu-option {
+      position: relative;
+      background: var(--main);
+      margin: 8px;
+      border-radius: 8px;
+      padding: 8px 8px 8px 56px;
+      display: grid;
+      grid-template-columns: min-content auto;
+    }
+    .menu-option .icon {
+      position: absolute;
+      left: 18px;
+      font-size: 24px;
+      top: calc(50% - 1px);
+      transform: translateY(-50%);
+    }
+    .menu-option h3 {
+      margin: 0 0 0 8px;
+      font-size: 18px;
+      width: max-content;
+    }
+    .menu-hide {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      font-size: 32px;
+      padding: 0;
+      z-index: 5;
+      background: var(--accent-l);
+      color: var(--color);
+      border-radius: 8px;
+    }
+    .menu-window .upper .banner {
+      display: grid;
+      grid-template-areas: "image title" "image sub-title";
+      grid-template-columns: 56px;
+      grid-template-rows: 38px 18px;
+    }
+
+    .menu-window .upper .banner .title {
+      margin: auto 4px auto 4px;
+    }
+    .menu-window .upper .banner .title h3 {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 272px;
+      height: 100%;
+      white-space: nowrap;
+    }
+    .menu-window .upper .banner .sub-title {
+      position: relative;
+    }
+    .menu-window .upper .banner .sub-title p {
+      color: var(--color-t);
+      font-size: 12px;
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      transform: translateY(-50%);
+    }
+    .menu-window .upper .content {
+      padding: 12px;
+    }
+    .menu-window .upper .banner .container {
+      border: 2px solid var(--green);
+      box-shadow: 0 0 0 2px var(--accent-d) inset;
+      box-sizing: border-box;
+      margin: 4px;
+      width: 48px;
+      height: 48px;
+      border-radius: 100%;
+      position: relative;
+      background: var(--main-l);
+      overflow: hidden;
+    }
+    .menu-window .upper .banner .container .material-icons-round {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -8px;
+      color: var(--main-l2);
+      font-size: 42px;
+    }
+
+    .menu-window .upper .banner .image img {
+      width: 48px;
+      height: 48px;
+    }
+    .menu-reveal {
+      position: fixed;
+      left: 0px;
+      top: 8px;
+      z-index: 1100;
+    }
+    .menu-window {
+      position: fixed;
+      width: 356px;
+      height: 100vh;
+      background: var(--main-d);
+      z-index: 1200;
+      display: none;
+    }
+    .menu-window .upper {
+      width: 100%;
+      height: 112px;
+      border-radius: 0 0 24px 24px;
+      overflow: hidden;
+      position: relative;
+    }
+    .menu-window .upper .content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+    }
+    .menu-window .background {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+
+      background: var(--accent);
+      background: linear-gradient(
+        34deg,
+        var(--accent-d2) 0%,
+        var(--accent) 98%
+      );
+    }
+  </style>
+</div>
