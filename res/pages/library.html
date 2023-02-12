@@ -1,0 +1,128 @@
+<div class="last_ep"></div>
+<div class="search"></div>
+    <div class="menu"></div>
+    
+    <div class="save_show"></div>
+    <div class="notifications"></div>
+<div class="grid">
+    
+    <div class="head"></div>
+    <div class="body">
+        <h3>Your saved shows</h3>
+        <div class="saved_shows">
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    function load_player(id) {
+    global_variables["last_ep"] = id
+    load_page("player")
+    }
+    $(document).ready(function () {
+    load_component("menu", "menu")
+    if (load_component("last_ep", "last_ep")) {
+        console.log("reached")
+    }
+    if (load_component("search", "search")) {
+        console.log("reached")
+    }
+    if (load_component("save_show", "save_show")) {
+        console.log("reached")
+    }
+    if (load_component("notifications", "notifications")) {
+        console.log("reached")
+        show_notification("Welcome back!", "Have a look at the recent airing!", 3, "pos")
+    }
+    let saved_shows = get_lastest_saved_array()
+    for (let i = 0; i < saved_shows.length; i++) {
+        const element = saved_shows[i];
+        $(".saved_shows").html($(".saved_shows").html()+`
+        <div class="saved_show" onclick="load_player('${element["id"]}-episode-${element.ep}')">
+                <div class="background">
+                    <img src="${element["img"]}" alt="">
+                </div>
+                <div class="data">
+                    <h3 class="title">
+                        ${element["id"].replaceAll("-"," ")}
+                    </h3>
+                    <p class="episode">${element["ep"]}</p>
+                </div>
+            </div>
+        `)
+    }
+    
+
+    })
+</script>
+
+<style>
+    .grid{
+        display: grid;
+        grid-template-rows: 56px auto;
+        height: 100vh;
+    }
+    .body{
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    .body{
+        margin: 24px 0 0 0;
+        position: relative;
+        z-index: 350;
+
+    }
+    .body .data{
+        margin: 12px;
+    }
+    .body .saved_shows{
+        display: grid;
+        max-width: 100vw;
+        min-width: 0;
+        grid-auto-rows: 168px;
+        grid-template-columns: auto auto;
+        overflow: hidden;
+    }
+    .body .saved_shows h3{
+        font-size: 12px;
+        max-height: 30%;
+        overflow: hidden;
+    }
+    .body .saved_shows p{
+        font-size: 10px;
+        color: var(--color-t);
+    }
+    .body .saved_shows .saved_show .background img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .body .saved_shows .saved_show .background{
+        width: 100%;
+        height: 100%;
+    }
+    .body .saved_shows .saved_show{
+        margin: 3px;
+    }
+    .body .saved_shows .saved_show .data{
+        margin: 0;
+        max-height: 40%;
+        
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        background: var(--main);
+        padding: 6px;
+        
+        border-radius: 4px;
+        width: calc(100%);
+        border: solid var(--main-l) 2px;
+    
+    }
+    .body .saved_shows .saved_show{
+        overflow: hidden;
+        border-radius: 6px;
+        position: relative;
+    }
+</style>

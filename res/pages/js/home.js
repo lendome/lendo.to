@@ -6,10 +6,18 @@ $(document).ready(function () {
     if (load_component("search", "search")) {
         console.log("reached")
     }
+    if (load_component("save_show", "save_show")) {
+        console.log("reached")
+    }
+    if (load_component("notifications", "notifications")) {
+        console.log("reached")
+    }
+    
     let trending_show
     fetch("https://gogoanime.consumet.stream/recent-release")
         .then((response) => response.json())
         .then((animelist) => {
+            show_notification("Welcome back!", "Have a look at the recent airing!", 3, "pos")
             $(".recent-episodes .episode-container").hide()
             console.log(animelist)
             for (let g = 0; g < animelist.length; g++) {
@@ -105,6 +113,8 @@ function load_trending_data(trending_show) {
     console.log(trending_show)
     $(".trending-display .watch").attr("id", trending_show["animeId"])
     $(".trending-display .title").text(trending_show["animeTitle"])
+    $(".trending-display .save_show_btn").attr("id",trending_show["animeId"])
+
 }
 function load_player(id) {
     global_variables["last_ep"] = id

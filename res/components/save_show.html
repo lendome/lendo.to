@@ -1,0 +1,64 @@
+<script>
+  function get_lastest_saved_array() {
+    let save_array = [];
+    if (localStorage.getItem("saved_shows")) {
+      save_array = JSON.parse(localStorage.getItem("saved_shows"));
+    }
+    return save_array;
+  }
+  function save_anime(a_id, episode = 1) {
+    let save_array = get_lastest_saved_array();
+    fetch("https://gogoanime.consumet.stream/anime-details/" + a_id)
+      .then((response) => response.json())
+      .then((animelist) => {
+        let image = animelist.animeImg;
+        let newFirstElement = {
+          id: a_id,
+          ep: episode,
+          img: image,
+        };
+        const newArray = [newFirstElement].concat(save_array);
+        localStorage.setItem("saved_shows", JSON.stringify(newArray));
+        console.log(get_lastest_saved_array());
+
+        show_notification(
+          "Success!",
+          `${newFirstElement["id"].replaceAll("-", " ")}`,
+          3,
+          "pos"
+        );
+        return true;
+      });
+  }
+  function remove_anime(a_id) {
+    let del = []
+    let save_array = get_lastest_saved_array();
+    for (let i = 0; i < save_array.length; i++) {
+      const element = save_array[i];
+      if (element.id == a_id) {
+        del.push(i)
+      }
+    }
+
+    for (let g = 0; g < del.length; g++) {
+        const element = del[g];
+        if (g > -1) {
+          // only splice array when item is found
+          save_array.splice(element, 1); // 2nd parameter means remove one item only
+        }
+        
+    }
+    localStorage.setItem("saved_shows", JSON.stringify(save_array));
+    return true;
+  }
+  function check_presence(id) {
+    let save_array = get_lastest_saved_array();
+    for (let i = 0; i < save_array.length; i++) {
+      const element = save_array[i];
+      if (element.id == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+</script>

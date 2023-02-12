@@ -30,7 +30,7 @@
     </div>
   </div>
   <script defer>
-      let genres = [
+      let search_genres = [
         "action",
         "adventure",
         "cars",
@@ -153,7 +153,7 @@
 
       }
       $(document).ready(function () {
-        for (let g = 0; g < genres.length; g++) {
+        for (let g = 0; g < search_genres.length; g++) {
           $(".check-options .genres .genre-container").html(
             $(".check-options .genres .genre-container").html() +
               `<div class="genre" onclick="toggle_genre(this.id)" id="${

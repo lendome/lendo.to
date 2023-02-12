@@ -1,138 +1,196 @@
 <script>
-    load_component("menu","menu")
-    if (load_component("search", "search")) {
+  load_component("menu", "menu");
+  if (load_component("search", "search")) {
+    console.log("reached");
+  }
+  if (load_component("notifications", "notifications")) {
         console.log("reached")
     }
-    console.log(global_variables)
-    var episode
-    var def_name
-    if (!global_variables.last_ep.includes("episode")) {
-        $("#player").attr("src", "https://vidplex.biz/player/" + global_variables["last_ep"] + "-episode-1")
-        episode = 1
-        def_name = global_variables.last_ep
-    } else {
-        $("#player").attr("src", "https://vidplex.biz/player/" + global_variables["last_ep"])
-        var semip = global_variables["last_ep"].split("-")
-        episode = semip[semip.length - 1]
-        console.log(semip[semip.length - 1])
-        def_name = global_variables.last_ep.substring(0, global_variables.last_ep.indexOf("-episode"))
-    }
-    fetch("https://gogoanime.consumet.stream/anime-details/" + def_name)
-        .then((response) => response.json())
-        .then((animelist) => {
-            console.log(animelist)
-            $(".body .data-current .title").text(animelist.animeTitle)
-            $(".body .data-current .ep-current").text(`Episode ${episode}/${animelist.totalEpisodes}`)
-            $(".progress-bar").css("width",((episode/animelist.totalEpisodes)*100)+"%")
-            for (let g = 0; g < animelist.totalEpisodes; g++) {
-                if(g+1 != episode)
-               { $(".all-episodes").html($(".all-episodes").html()+
-                `<button onclick="load_ep(this.id)" class="episode" id="${g+1}"">${g+1}</button>` 
-                )}else{
-                    $(".all-episodes").html($(".all-episodes").html()+
-                `<button onclick="load_ep(this.id)" class="episode active" id="${g+1}"">${g+1}</button>` 
-                )
-                }
-            }
-        });
-    document.addEventListener("fullscreenchange", changeHandler, false);
-    document.addEventListener("webkitfullscreenchange", changeHandler, false);
-    document.addEventListener("mozfullscreenchange", changeHandler, false);
-    function changeHandler(e) {
-        if (document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen || document.msFullscreenElement) {
-            screen.orientation.lock("landscape")
-                .then(function () {
-
-                })
-
+  console.log(global_variables);
+  var episode;
+  var def_name;
+  if (!global_variables.last_ep.includes("episode")) {
+    $("#player").attr(
+      "src",
+      "https://vidplex.biz/player/" + global_variables["last_ep"] + "-episode-1"
+    );
+    episode = 1;
+    def_name = global_variables.last_ep;
+  } else {
+    $("#player").attr(
+      "src",
+      "https://vidplex.biz/player/" + global_variables["last_ep"]
+    );
+    var semip = global_variables["last_ep"].split("-");
+    episode = semip[semip.length - 1];
+    console.log(semip[semip.length - 1]);
+    def_name = global_variables.last_ep.substring(
+      0,
+      global_variables.last_ep.indexOf("-episode")
+    );
+  }
+  fetch("https://gogoanime.consumet.stream/anime-details/" + def_name)
+    .then((response) => response.json())
+    .then((animelist) => {
+      console.log(animelist);
+      $(".body .data-current .title").text(animelist.animeTitle);
+      $(".body .data-current .ep-current").text(
+        `Episode ${episode}/${animelist.totalEpisodes}`
+      );
+      $(".progress-bar").css(
+        "width",
+        (episode / animelist.totalEpisodes) * 100 + "%"
+      );
+      console.error(check_presence(def_name));
+      console.error(get_lastest_saved_array());
+      console.log(def_name);
+      if (check_presence(def_name)) {
+        remove_anime(def_name)
+        save_anime(def_name, episode)
+        $(".save_button_player")
+          .html(`<div class="button-icon material-icons-round">bookmark</div>
+          Saved!`);
+        $(".save_button_player").css("background", "var(--main-l)");
+      }
+      for (let g = 0; g < animelist.totalEpisodes; g++) {
+        if (g + 1 != episode) {
+          $(".all-episodes").html(
+            $(".all-episodes").html() +
+              `<button onclick="load_ep(this.id)" class="episode" id="${
+                g + 1
+              }"">${g + 1}</button>`
+          );
+        } else {
+          $(".all-episodes").html(
+            $(".all-episodes").html() +
+              `<button onclick="load_ep(this.id)" class="episode active" id="${
+                g + 1
+              }"">${g + 1}</button>`
+          );
         }
-
+      }
+    });
+  document.addEventListener("fullscreenchange", changeHandler, false);
+  document.addEventListener("webkitfullscreenchange", changeHandler, false);
+  document.addEventListener("mozfullscreenchange", changeHandler, false);
+  function save_show_player() {
+    if (check_presence(def_name)) {
+      if (remove_anime(def_name)) {
+        $(".save_button_player")
+          .html(`<div class="button-icon material-icons-round">bookmark</div>
+          Save`);
+        $(".save_button_player").css("background", "var(--accent)");
+      }
+    } else {
+      if (save_anime(def_name, episode)) {
+        $(".save_button_player")
+          .html(`<div class="button-icon material-icons-round">bookmark</div>
+          Saved!`);
+        $(".save_button_player").css("background", "var(--main-l)");
+      }
     }
-    function load_player(id) {
-    global_variables["last_ep"] = id
-    load_page("player")
+  }
+  function changeHandler(e) {
+    if (
+      document.fullScreen ||
+      document.mozFullScreen ||
+      document.webkitIsFullScreen ||
+      document.msFullscreenElement
+    ) {
+      screen.orientation.lock("landscape").then(function () {});
     }
-    function load_ep(ep_id) {
-        global_variables["last_ep"] = def_name+"-episode-"+ep_id
-        load_page("player")
-    }
+  }
+  function load_player(id) {
+    global_variables["last_ep"] = id;
+    load_page("player");
+  }
+  function load_ep(ep_id) {
+    global_variables["last_ep"] = def_name + "-episode-" + ep_id;
+    load_page("player");
+  }
 </script>
+<div class="notifications"></div>
 <div class="menu"></div>
 <div class="grid">
-
-    <head>
-<div class="cat">
-    <div class="search"></div>
-</div>
-    </head>
-    <div class="body">
-        <div class="player-section">
-
-            <iframe id="player" src="" allowfullscreen></iframe>
-        </div>
-        <div class="data-current">
-            <h3 class="title">-</h3>
-            <div class="ep-progress">
-                <div class="progress-container">
-                    <div class="progress-bar"></div>
-                </div>
-                <p class="ep-current">
-                    Episode -/-
-                </p>
-            </div>
-        </div>
-        <div class="all-episodes">
-            
-
-        </div>
+  <head>
+    <div class="cat">
+      <div class="search"></div>
     </div>
+  </head>
+  <div class="body">
+    <div class="player-section">
+      <iframe id="player" src="" allowfullscreen></iframe>
+    </div>
+    <div class="data-current">
+      <h3 class="title">-</h3>
+      <div class="ep-progress">
+        <div class="progress-container">
+          <div class="progress-bar"></div>
+        </div>
+        <p class="ep-current">Episode -/-</p>
+      </div>
+      <div class="buttons">
+        <button class="save_button_player" onclick="save_show_player()">
+          <div class="button-icon material-icons-round">bookmark</div>
+          Save
+        </button>
+      </div>
+    </div>
+    <div class="all-episodes"></div>
+  </div>
 </div>
 <style>
-    .grid{
-        display: grid;
-        grid-template-rows: 56px auto;
-        height: 100vh;
-    }
-    .all-episodes {
-        display: grid;
-        grid-template-columns: 25% 25% 25% 25%;
-    }
+  .data-current .buttons {
+    display: grid;
+    grid-auto-flow: column;
+  }
+  .data-current .buttons button {
+    background: var(--accent);
+    margin: 12px;
+    border-radius: 8px;
+  }
+  .grid {
+    display: grid;
+    grid-template-rows: 56px auto;
+    height: 100vh;
+  }
+  .all-episodes {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+  }
 
-    .all-episodes .episode {
-        background: var(--main-l);
-        margin: 3px;
-        padding: 6px;
-        border-radius: 6px;
-    }
+  .all-episodes .episode {
+    background: var(--main-l);
+    margin: 3px;
+    padding: 6px;
+    border-radius: 6px;
+  }
 
-    .body {
-        width: 100vw;
-        overflow-x: hidden;
-        display: grid;
+  .body {
+    width: 100vw;
+    overflow-x: hidden;
+    display: grid;
+  }
 
-    }
+  .player-section {
+    min-height: 220px;
+  }
 
-    .player-section {
-        min-height: 220px;
-    }
+  .player-section #player {
+    width: 100%;
+    height: 100%;
+  }
 
-    .player-section #player {
-        width: 100%;
-        height: 100%;
-    }
-
-    .progress-container {
-        height: 12px;
-        background: var(--main-l);
-        margin: 12px;
-        overflow: hidden;
-        border-radius: 12px;
-
-    }
-    .progress-bar {
-        height: 12px;
-        background: var(--accent);
-        width: 0;
-
-    }
+  .progress-container {
+    height: 12px;
+    background: var(--main-l);
+    margin: 12px;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .progress-bar {
+    height: 12px;
+    background: var(--accent);
+    width: 0;
+  }
 </style>

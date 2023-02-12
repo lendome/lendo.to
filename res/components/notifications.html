@@ -1,0 +1,85 @@
+<div class="notification">
+    <div class="affirmation-block"></div>
+    <div class="data">
+        <h3>Notification text</h3>
+        <p>Notification sub</p>
+    </div>
+</div>
+<style>
+    .notification{
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 24px;
+        z-index: 1400;
+        background: var(--main-l);
+        
+        border-radius: 8px;
+        overflow: hidden;
+        min-width: 324px;
+        opacity: 0;
+
+    }
+    .animating{
+        animation: notify 5s;
+    }
+    @keyframes notify {
+        0% {
+            opacity: 0;
+            bottom: 0;
+        }
+        10%{
+            opacity: 1;
+            bottom: 32px;
+        }
+        20%{
+            opacity: 1;
+            bottom: 24px;
+        }
+        90%{
+            opacity: 1;
+            bottom: 24px;
+        }
+        100% {
+            opacity: 0;
+            bottom: 0;
+        }
+    }
+    .notification .affirmation-block{
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 48px;
+        background: var(--accent);
+    }
+    .notification .data{
+        margin: 12px 18px 12px 56px;
+    }
+    .notification .data p{
+        font-size: 12px;
+        color: var(--color-t);
+    }
+    
+
+</style>
+<script>
+    function show_notification(text, sub, duration, affirmation="neu") {
+        let colors = {"pos":"var(--green)","neg":"var(--red)","neu":"var(--accent)"}
+        $(".notification .affirmation-block").css("background",colors[affirmation])
+        
+
+        
+        
+        $(".notification .data h3").text(text)
+        $(".notification .data p").text(sub)
+        
+        $(".notification").addClass("animating")
+        
+        delay(5000).then(() => {
+            $(".notification").removeClass("animating")
+        });
+        
+    }
+    
+</script>
