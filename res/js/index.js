@@ -48,3 +48,10 @@ function delay(time) {
     }
     return arr;
   }
+  function load_modal_section(modal,section) {
+    $("."+modal+" .comp").slideUp(500)
+    $("."+modal+" ."+section).slideDown(400)
+  }
+  function load_modal(modal) {
+    $("."+modal).slideToggle(500)
+  }

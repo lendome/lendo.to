@@ -1,0 +1,16 @@
+{
+    "name": "lendo.to high quality anime",
+    "short_name": "lendo",
+    "description": "Your favourite simplified anime app.",
+    "icons": [
+      {
+        "src": "icons/icon.webp",
+        "type": "image/webp"
+      }
+    ],
+    "start_url": "../../index.html",
+    "display": "fullscreen",
+    "theme_color": "#4871f7",
+    "background_color": "#0b0c0e"
+  }
+  

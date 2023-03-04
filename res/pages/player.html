@@ -82,11 +82,12 @@
         $(".save_button_player").css("background", "var(--accent)");
       }
     } else {
-      if (save_anime(def_name, episode)) {
-        $(".save_button_player")
+      $(".save_button_player")
           .html(`<div class="button-icon material-icons-round">bookmark</div>
           Saved!`);
         $(".save_button_player").css("background", "var(--main-l)");
+      if (save_anime(def_name, episode)) {
+       
       }
     }
   }

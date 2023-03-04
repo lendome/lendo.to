@@ -1,4 +1,5 @@
 <div class="menu">
+  <div class="user"></div>
   <button
     class="material-icons-round menu-reveal"
     onclick="$('.menu-window').show('slide', { direction: 'left' }, 200);"
@@ -14,7 +15,7 @@
         chevron_left
       </button>
       <div class="content">
-        <div class="profile">
+        <div class="profile" onclick="$('.menu-window').hide('slide', { direction: 'left' }, 200);load_modal('user-modal')">
           <div class="banner">
             <div style="grid-area: image" class="image">
               <div class="container">
@@ -24,10 +25,10 @@
             </div>
 
             <div class="title" style="grid-area: title">
-              <h3>Sir. Mr. George Reddish Manlet</h3>
+              <h3>Sign-In</h3>
             </div>
             <div class="sub-title" style="grid-area: sub-title">
-              <p>Teamon Slayers</p>
+              <p>Amateur</p>
             </div>
           </div>
         </div>
@@ -41,7 +42,6 @@
         <div class="icon material-icons-round">home</div>
         <h3>Home</h3>
       </div>
-      
     </div>
     <div class="menu-options" onclick="load_page('library')">
       <div class="menu-option">
@@ -50,7 +50,6 @@
         <div class="icon material-icons-round">bookmark</div>
         <h3>Saved shows</h3>
       </div>
-      
     </div>
     <div class="menu-options" onclick="load_page('player')">
       <div class="menu-option">
@@ -59,10 +58,15 @@
         <div class="icon material-icons-round">play_circle_filled</div>
         <h3>Continue watching</h3>
       </div>
-      
     </div>
   </div>
   <script>
+    if (load_component("user", "user")) {
+      console.log("reached");
+    }
+    function update_user_menu() {
+      
+    }
     function menu() {}
     $(".menu-window").hide();
     document.addEventListener("touchstart", handleTouchStart, false);
