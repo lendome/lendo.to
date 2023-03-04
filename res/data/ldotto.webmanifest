@@ -5,6 +5,7 @@
     "icons": [
       {
         "src": "icons/icon.webp",
+        "sizes":"250x250",
         "type": "image/webp"
       }
     ],

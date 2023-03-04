@@ -20,6 +20,11 @@ function load_component(component, container) {
 $( document ).ready(function() {
     
     load_page("home")
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+          .register('res/data/sw.js')
+          .then(function() { console.log("Tada! Your service worker is now registered"); });
+  }
 });
 
 function getAverageRGB(imgEl) {
