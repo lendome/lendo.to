@@ -1,93 +1,150 @@
 <div class="user">
-    <div class="user-modal modal">
-        <div class="close-container">
-            <button class="material-icons-round" onclick='load_modal("user-modal")'>close</button>
-        </div>
-        <div class="modal-body">
-          <div class="input-sign-in comp">
-            <h3><strong>Welcome</strong> back!</h3>
-            <div class="inputs">
-              <div class="input-con">
-                <p>Username</p>
-                <input type="text" name="" id="uname" placeholder="">
-              </div>
-              <div class="input-con">
-                <p>Password</p>
-                <input type="password" name="" id="uname" placeholder="">
-              </div>
-              <button class="action-button">
-                Log in
-                <div class="button-icon material-icons-round">
-                  login
-                </div>
-              </button>
-              <div class="indic">
-                Dont have an account yet? <a onclick='load_modal_section("user-modal","input-sign-up")'>Sign up!</a>
-              </div>
-            </div>
-          </div>
-          <div class="input-sign-up comp">
-            <h3><strong>Welcome</strong> aboard!</h3>
-            <div class="inputs">
-              <div class="input-con">
-                <p>Username</p>
-                <input type="text" name="" id="uname" placeholder="">
-              </div>
-              <div class="input-con">
-                <p>Password</p>
-                <input type="password" name="" id="uname" placeholder="">
-              </div>
-              <button class="action-button">
-                Sign up
-                <div class="button-icon material-icons-round">
-                  person
-                </div>
-              </button>
-              <div class="indic">
-                Already have an account? <a onclick='load_modal_section("user-modal","input-sign-in")'>Log in!</a>
-              </div>
-            </div>
-          </div>
-          <div class="confirmation comp"></div>
-        </div>
-        
+  <div class="user-modal modal">
+    <div class="close-container">
+      <button class="material-icons-round" onclick='load_modal("user-modal")'>
+        close
+      </button>
     </div>
+    <div class="modal-body">
+      <div class="input-sign-in comp">
+        <h3><strong>Welcome</strong> back!</h3>
+        <div class="inputs">
+          <div class="input-con">
+            <p>Username</p>
+            <input type="text" name="" class="SIU" placeholder="" />
+          </div>
+          <div class="input-con">
+            <p>Password</p>
+            <input type="password" name="" class="SIP" placeholder="" />
+          </div>
+          <button
+            class="action-button"
+            onclick="login($('.SIP').val(),$('.SIU').val())"
+          >
+            Log in
+            <div class="button-icon material-icons-round">login</div>
+          </button>
+          <div class="indic">
+            Dont have an account yet?
+            <a onclick='load_modal_section("user-modal","input-sign-up")'
+              >Sign up!</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="input-sign-up comp">
+        <h3><strong>Welcome</strong> aboard!</h3>
+        <div class="inputs">
+          <div class="input-con">
+            <p>Username</p>
+            <input type="text" name="" class="SUU" placeholder="" />
+          </div>
+          <div class="input-con">
+            <p>Password</p>
+            <input type="password" name="" class="SUP" placeholder="" />
+          </div>
+          <button class="action-button" onclick="register($('.SUP').val(),$('.SUU').val())">
+            Sign up
+            <div class="button-icon material-icons-round">person</div>
+          </button>
+          <div class="indic">
+            Already have an account?
+            <a onclick='load_modal_section("user-modal","input-sign-in")'
+              >Log in!</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="handle_user comp"> 
+        <h3>Signed in as <strong>Username</strong></h3>
+        <div class="inputs">
+          <button class="action-button" style="background: var(--red);" onclick="logout()">
+            Log out
+            <div class="button-icon material-icons-round">person</div>
+          </button>
+        </div>
+      </div>
+      <div class="confirmation comp"></div>
+    </div>
+  </div>
 </div>
 <script>
-  $(".user-modal .comp").hide()
-  $(".user-modal").hide()
-  
-  load_modal_section("user-modal","input-sign-up")
+  $(".user-modal .comp").hide();
+  $(".user-modal").hide();
 
+  load_modal_section("user-modal", "input-sign-in");
+  update_user_menu()
+  
   function check_login() {
-    if(localStorage.getItem("token")){
-      return true
+    if (localStorage.getItem("token")) {
+      return true;
     }
-    return false
+    return false;
   }
-  function get_user(id=null) {
-    if(!id && !check_login()){
-      return false
-    }
-    else if(id){
-      $.get("http://localhost/lendo.to/api/user?id="+id,function (data) {
+  function get_user(prompt = null) {
+    if(check_login){
+      $.get("https://rimenvori.com/api/user?token="+localStorage.getItem("token"),function (data) {
         return JSON.parse(data)
       })
-    }
+    }else[
+    $.get("https://rimenvori.com/api/user?"+prompt,function (data) {
+        return JSON.parse(data)
+      })
+    ]
   }
-  
+  function login(pw, user) {
+    console.log("login launched")
+    $.ajax({
+      url: "https://rimenvori.com/api/user?login",
+      headers: { username: user, password: pw },
+      success: function (data) {
+        data = JSON.parse(data)
+        console.error(data)
+        if(String(data["code"]).startsWith("2")){
+          localStorage.setItem("token",data["token"])
+          update_user_menu()
+        }
+        else{
+          console.log(data)
+        }
+      },
+    });
+  }
+  function register(pw, user) {
+    $.ajax({
+      url: "https://rimenvori.com/api/user?register",
+      headers: { username: user, password: pw },
+      success: function (data) {
+        data = JSON.parse(data)
+        console.log(data);
+        if(String(data["code"]).startsWith("2")){
+          localStorage.setItem("token",data["token"])
+          update_user_menu()
+        }
+        else{
+          console.log(data)
+        }
+      },
+    });
+  }
+  function logout() {
+    localStorage.removeItem("token")
+    update_user_menu()
+    
+    // $(".user-modal").slideUp(200)
+  }
 </script>
 <style>
-  .modal .indic{
+  .modal .indic {
     font-size: 12px;
     text-align: center;
     margin: 12px;
     color: var(--color-t);
   }
-  .modal .indic a{
+  .modal .indic a {
     color: var(--accent-l);
   }
-  .modal .action-button{
+  .modal .action-button {
     margin: 32px 0 12px 0;
     text-align: center;
     width: 100%;
@@ -97,7 +154,7 @@
     padding-top: 8px;
     padding-bottom: 8px;
   }
-    .modal{
+  .modal {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -109,39 +166,36 @@
     background: var(--main-d2);
     z-index: 1560;
   }
-  .modal .modal-body .comp h3{
+  .modal .modal-body .comp h3 {
     text-align: center;
   }
-  .modal .modal-body .comp{
-
-
+  .modal .modal-body .comp {
     border-radius: 12px;
   }
-  .modal .inputs input{
+  .modal .inputs input {
     background: var(--main-l);
     width: 100%;
     padding: 8px 12px 8px 12px;
     border-radius: 18px;
     border: solid 1px transparent;
   }
-  .modal .inputs input:focus{
-
+  .modal .inputs input:focus {
     border: solid 1px var(--accent);
   }
-  .modal .inputs .input-con p{
+  .modal .inputs .input-con p {
     margin: 6px 0 2px 12px;
     font-size: 8px;
     color: var(--color-t);
   }
-  .modal .inputs .input-con{
+  .modal .inputs .input-con {
     margin: 12px 0 12px 0;
   }
-  .modal .close-container{
+  .modal .close-container {
     position: absolute;
     right: 8px;
     top: 8px;
   }
-  .modal .close-container button{
+  .modal .close-container button {
     color: var(--main);
     background: var(--main-l);
     font-size: 18px;
@@ -149,6 +203,5 @@
     width: 24px;
     height: 24px;
     border-radius: 24px;
-
-  } 
+  }
 </style>

@@ -1,5 +1,6 @@
 <div class="menu">
   <div class="user"></div>
+  <div class="save_show"></div>
   <button
     class="material-icons-round menu-reveal"
     onclick="$('.menu-window').show('slide', { direction: 'left' }, 200);"
@@ -28,7 +29,7 @@
               <h3>Sign-In</h3>
             </div>
             <div class="sub-title" style="grid-area: sub-title">
-              <p>Amateur</p>
+              <p class="show_count">Hi there!</p>
             </div>
           </div>
         </div>
@@ -64,10 +65,27 @@
     if (load_component("user", "user")) {
       console.log("reached");
     }
-    function update_user_menu() {
-      
+    if (load_component("save_show", "save_show")) {
+        console.log("reached")
     }
-    function menu() {}
+    function update_user_menu() {
+      if(check_login()){
+        $.get("https://rimenvori.com/api/user?token="+localStorage.getItem("token"),function (data) {
+        console.log(data)
+        data = JSON.parse(data)
+        user = data
+        $(".menu-window .profile .title h3").text(data["username"])
+        $(".menu-window .profile .sub-title p").text(get_lastest_saved_array().length+" total shows watched")
+        load_modal_section("user-modal", "handle_user");
+        $(".handle_user h3 strong").text(data["username"])
+
+      })
+      }else{
+        load_modal_section("user-modal", "input-sign-in");
+        $(".menu-window .profile .title h3").text("sign in")
+      }
+    }
+    
     $(".menu-window").hide();
     document.addEventListener("touchstart", handleTouchStart, false);
     document.addEventListener("touchmove", handleTouchMove, false);
