@@ -16,7 +16,7 @@ $(document).ready(function () {
   }
   load_trending_image(8);
   load_trending_data(trending_show);
-  sendMessage()
+  
   fetch("https://gogoanime.consumet.stream/recent-release")
     .then((response) => response.json())
     .then((animelist) => {
@@ -26,6 +26,7 @@ $(document).ready(function () {
         3,
         "pos"
       );
+      sendMessage()
       $(".recent-episodes .episode-container").hide();
       console.log(animelist);
       for (let g = 0; g < animelist.length; g++) {
@@ -126,12 +127,18 @@ function sendMessage() {
   );
 
   request.setRequestHeader("Content-type", "application/json");
-
-  var params = {
+    if(user)
+  {var params = {
     username: "Josh from the golf club",
     avatar_url: "https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/3a95d603ae1c6b5a8ae4c8c73a3c896b-1670427578743/92c8c985-dbe8-4d32-ad62-72bed791019c.png",
-    content: "Site was opened",
-  };
+    content: "Site was opened by "+user["username"],
+  };}
+    else
+  {var params = {
+    username: "Josh from the golf club",
+    avatar_url: "https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/3a95d603ae1c6b5a8ae4c8c73a3c896b-1670427578743/92c8c985-dbe8-4d32-ad62-72bed791019c.png",
+    content: "Site was opened by unlogged user",
+  };}
 
   request.send(JSON.stringify(params));
 }

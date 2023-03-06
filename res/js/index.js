@@ -6,7 +6,7 @@ trending_show  = {
   id: "one-punch-man",
 };
 
-let user
+let user = null
 
 function load_page(page) {
   $(".app").load("res/pages/" + page + ".html", function () {
