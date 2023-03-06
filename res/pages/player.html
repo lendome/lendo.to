@@ -4,8 +4,8 @@
     console.log("reached");
   }
   if (load_component("notifications", "notifications")) {
-        console.log("reached")
-    }
+    console.log("reached");
+  }
   console.log(global_variables);
   var episode;
   var def_name;
@@ -29,44 +29,102 @@
       global_variables.last_ep.indexOf("-episode")
     );
   }
-  fetch("https://gogoanime.consumet.stream/anime-details/" + def_name)
+  fetch(
+    "https://gogoanime.consumet.stream/anime-details/" +
+      global_variables.last_id
+  )
     .then((response) => response.json())
     .then((animelist) => {
-      console.log(animelist);
-      $(".body .data-current .title").text(animelist.animeTitle);
-      $(".body .data-current .ep-current").text(
-        `Episode ${episode}/${animelist.totalEpisodes}`
-      );
-      $(".progress-bar").css(
-        "width",
-        (episode / animelist.totalEpisodes) * 100 + "%"
-      );
-      console.error(check_presence(def_name));
-      console.error(get_lastest_saved_array());
-      console.log(def_name);
-      if (check_presence(def_name)) {
-        remove_anime(def_name)
-        save_anime(def_name, episode)
-        $(".save_button_player")
-          .html(`<div class="button-icon material-icons-round">bookmark</div>
+      if (animelist["error"]) {
+        fetch(
+          "https://gogoanime.consumet.stream/search?keyw=" +
+            global_variables.last_id
+        )
+          .then((response) => response.json())
+          .then((animelist) => {
+            console.log("anim");
+            console.log(animelist);
+            animID = animelist[0].animeId;
+            fetch(
+              "https://gogoanime.consumet.stream/anime-details/" +
+                animID
+            )
+              .then((response) => response.json())
+              .then((animelist) => {
+                $(".body .data-current .title").text(animelist.animeTitle);
+                $(".body .data-current .ep-current").text(
+                  `Episode ${episode}/${animelist.totalEpisodes}`
+                );
+                $(".progress-bar").css(
+                  "width",
+                  (episode / animelist.totalEpisodes) * 100 + "%"
+                );
+                console.error(check_presence(def_name));
+                console.error(get_lastest_saved_array());
+                console.log(def_name);
+                if (check_presence(def_name)) {
+                  remove_anime(def_name);
+                  save_anime(def_name, episode);
+                  $(".save_button_player")
+                    .html(`<div class="button-icon material-icons-round">bookmark</div>
           Saved!`);
-        $(".save_button_player").css("background", "var(--main-l)");
-      }
-      for (let g = 0; g < animelist.totalEpisodes; g++) {
-        if (g + 1 != episode) {
-          $(".all-episodes").html(
-            $(".all-episodes").html() +
-              `<button onclick="load_ep(this.id)" class="episode" id="${
-                g + 1
-              }"">${g + 1}</button>`
-          );
-        } else {
-          $(".all-episodes").html(
-            $(".all-episodes").html() +
-              `<button onclick="load_ep(this.id)" class="episode active" id="${
-                g + 1
-              }"">${g + 1}</button>`
-          );
+                  $(".save_button_player").css("background", "var(--main-l)");
+                }
+                for (let g = 0; g < animelist.totalEpisodes; g++) {
+                  if (g + 1 != episode) {
+                    $(".all-episodes").html(
+                      $(".all-episodes").html() +
+                        `<button onclick="load_ep(this.id)" class="episode" id="${
+                          g + 1
+                        }"">${g + 1}</button>`
+                    );
+                  } else {
+                    $(".all-episodes").html(
+                      $(".all-episodes").html() +
+                        `<button onclick="load_ep(this.id)" class="episode active" id="${
+                          g + 1
+                        }"">${g + 1}</button>`
+                    );
+                  }
+                }
+              });
+          });
+      } else {
+        $(".body .data-current .title").text(animelist.animeTitle);
+        $(".body .data-current .ep-current").text(
+          `Episode ${episode}/${animelist.totalEpisodes}`
+        );
+        $(".progress-bar").css(
+          "width",
+          (episode / animelist.totalEpisodes) * 100 + "%"
+        );
+        console.error(check_presence(def_name));
+        console.error(get_lastest_saved_array());
+        console.log(def_name);
+        if (check_presence(def_name)) {
+          remove_anime(def_name);
+          save_anime(def_name, episode);
+          $(".save_button_player")
+            .html(`<div class="button-icon material-icons-round">bookmark</div>
+          Saved!`);
+          $(".save_button_player").css("background", "var(--main-l)");
+        }
+        for (let g = 0; g < animelist.totalEpisodes; g++) {
+          if (g + 1 != episode) {
+            $(".all-episodes").html(
+              $(".all-episodes").html() +
+                `<button onclick="load_ep(this.id)" class="episode" id="${
+                  g + 1
+                }"">${g + 1}</button>`
+            );
+          } else {
+            $(".all-episodes").html(
+              $(".all-episodes").html() +
+                `<button onclick="load_ep(this.id)" class="episode active" id="${
+                  g + 1
+                }"">${g + 1}</button>`
+            );
+          }
         }
       }
     });
@@ -83,11 +141,10 @@
       }
     } else {
       $(".save_button_player")
-          .html(`<div class="button-icon material-icons-round">bookmark</div>
+        .html(`<div class="button-icon material-icons-round">bookmark</div>
           Saved!`);
-        $(".save_button_player").css("background", "var(--main-l)");
+      $(".save_button_player").css("background", "var(--main-l)");
       if (save_anime(def_name, episode)) {
-       
       }
     }
   }

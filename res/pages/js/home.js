@@ -32,7 +32,7 @@ $(document).ready(function () {
       for (let g = 0; g < animelist.length; g++) {
         $(".recent-episodes .episode-container").html(
           $(".recent-episodes .episode-container").html() +
-            `<div id="${animelist[g]["episodeId"]}" onclick="load_player(this.id)" class="episode">
+            `<div id="${animelist[g]["episodeId"]}" onclick="load_player(this.id,'${animelist[g]["animeId"]}')" class="episode">
             <div class="background"><img src="${animelist[g]["animeImg"]}" alt=""></div>
             <div class="data">
                 <h3 class="title">${animelist[g]["animeTitle"]}</h3>
@@ -63,7 +63,7 @@ function load_section(section) {
         }
         $(".recent-episodes .episode-container").html(
           $(".recent-episodes .episode-container").html() +
-            `<div id="${animelist[g][correct_id]}" onclick="load_player(this.id)" class="episode">
+            `<div id="${animelist[g][correct_id]}" onclick="load_player(this.id, '${animelist[g][correct_id]}')" class="episode">
             <div class="background"><img src="${animelist[g]["animeImg"]}" alt=""></div>
             <div class="data">
                 <h3 class="title">${animelist[g]["animeTitle"]}</h3>
@@ -110,8 +110,9 @@ function load_trending_data(trending_show) {
   $(".trending-display .title").text(trending_show["title"]);
   $(".trending-display .save_show_btn").attr("id", trending_show["id"]);
 }
-function load_player(id) {
+function load_player(id,anID) {
   global_variables["last_ep"] = id;
+  global_variables["last_id"] = anID;
   load_page("player");
 }
 
