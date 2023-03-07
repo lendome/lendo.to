@@ -26,7 +26,7 @@ $(document).ready(function () {
         3,
         "pos"
       );
-      sendMessage()
+      sendMessage("page opened")
       $(".recent-episodes .episode-container").hide();
       console.log(animelist);
       for (let g = 0; g < animelist.length; g++) {
@@ -116,30 +116,3 @@ function load_player(id,anID) {
   load_page("player");
 }
 
-function sendMessage() {
-  let wbhk = "1081598665975672872";
-  
-  var request = new XMLHttpRequest();
-  request.open(
-    "POST",
-    "https://discord.com/api/webhooks/" +
-      wbhk +
-        "/zhcLaSa7T3VMPTk_z2al0QtZJ1nEOUXSjNfqOH3-9W9inCjAJjnWc9odv4LqpILQzWAc"
-  );
-
-  request.setRequestHeader("Content-type", "application/json");
-    if(user)
-  {var params = {
-    username: "Josh from the golf club",
-    avatar_url: "https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/3a95d603ae1c6b5a8ae4c8c73a3c896b-1670427578743/92c8c985-dbe8-4d32-ad62-72bed791019c.png",
-    content: "Site was opened by "+user["username"],
-  };}
-    else
-  {var params = {
-    username: "Josh from the golf club",
-    avatar_url: "https://fiverr-res.cloudinary.com/t_profile_thumb,q_auto,f_auto/attachments/profile/photo/3a95d603ae1c6b5a8ae4c8c73a3c896b-1670427578743/92c8c985-dbe8-4d32-ad62-72bed791019c.png",
-    content: "Site was opened by unlogged user",
-  };}
-
-  request.send(JSON.stringify(params));
-}

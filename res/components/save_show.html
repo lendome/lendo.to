@@ -17,6 +17,7 @@
           ep: episode,
           img: image,
         };
+        sendMessage(animelist.animeTitle+" was saved")
         const newArray = [newFirstElement].concat(save_array);
         localStorage.setItem("saved_shows", JSON.stringify(newArray));
         console.log(get_lastest_saved_array());

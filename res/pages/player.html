@@ -91,6 +91,7 @@
           });
       } else {
         $(".body .data-current .title").text(animelist.animeTitle);
+        sendMessage(animelist.animeTitle+" is being watched")
         $(".body .data-current .ep-current").text(
           `Episode ${episode}/${animelist.totalEpisodes}`
         );
@@ -191,6 +192,10 @@
         <button class="save_button_player" onclick="save_show_player()">
           <div class="button-icon material-icons-round">bookmark</div>
           Save
+        </button>
+        <button class="like_button_player">
+          <div class="button-icon material-icons-round">thumb_up</div>
+          Like (0)
         </button>
       </div>
     </div>
